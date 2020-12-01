@@ -1,24 +1,23 @@
 import logo from './logo.svg';
 import './App.css';
 
+import { GameEngine } from "react-game-engine";
+
+import { Box } from "./renderers";
+import { MoveBox } from "./systems"
+
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <GameEngine
+          style={{ width: 800, height: 600, backgroundColor: "blue" }}
+          systems={[MoveBox]}
+          entities={{
+          //-- Notice that each entity has a unique id (required)
+          //-- and a renderer property (optional). If no renderer
+          //-- is supplied with the entity - it won't get displayed.
+          box1: { x: 200,  y: 200, renderer: <Box />}
+        }}>
+      </GameEngine>
   );
 }
 
