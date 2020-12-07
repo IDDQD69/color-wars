@@ -8,32 +8,58 @@ import Konva from 'konva';
 
 function ColorWarsRect() {
 
-  const [color, setColor] = useState('green');
+  const [rectangles, setRectanges] = useState(() => {
+    const initState = [];
+    let w = 15;
+    let h = 15;
 
-  const changeColor = () => {
-    setColor(Konva.Util.getRandomColor());
+    let rectangles = [];
+    for (var x = 0; x < w; x++) {
+      for (var y = 0; y < h; y++) {
+        initState.push({
+          id: 0,
+          x: x,
+          y: y,
+          color: 'green'
+        })
+      }
+    }
+    return initState;
+  });
+
+  const changeColor = (x, y) => {
+    const newRects = [];
+    for (let r in rectangles) {
+      if (r.x === x && r.y === y) {
+        r.color = Konva.Util.getRandomColor();
+      }
+      newRects.push(r);
+    }
+
+    setRectanges(newRects);
   }
 
-  const getRectangles = () => {
+  const renderRectangles = () => {
     return(
       <Layer>
-        <Rect
-          x={20}
-          y={20}
-          width={50}
-          height={50}
-          fill={'green'}
-          fill={color}
-          shadowBlur={5}
-          onClick={() => {changeColor() }}
-        />
+        {rectangles.map((rect) => (
+          <Rect
+            x={ rect['x'] * 51 }
+            y={ rect['y'] * 51}
+            onClick={() => { changeColor(rect['x'], rect['y']) }}
+            fill={ rect['color'] }
+            width={50}
+            height={50}
+          />
+
+        ))}
       </Layer>
     );
 
   }
 
   return (
-    getRectangles()
+    renderRectangles()
   );
 
 }
