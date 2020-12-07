@@ -1,23 +1,52 @@
 import logo from './logo.svg';
 import './App.css';
 
-import { GameEngine } from "react-game-engine";
+import React, { useState } from 'react';
+import { render } from 'react-dom';
+import { Stage, Layer, Rect, Text } from 'react-konva';
+import Konva from 'konva';
 
-import { Box } from "./renderers";
-import { MoveBox } from "./systems"
+function ColorWarsRect() {
+
+  const [color, setColor] = useState('green');
+
+  const changeColor = () => {
+    setColor(Konva.Util.getRandomColor());
+  }
+
+  const getRectangles = () => {
+    return(
+      <Layer>
+        <Rect
+          x={20}
+          y={20}
+          width={50}
+          height={50}
+          fill={'green'}
+          fill={color}
+          shadowBlur={5}
+          onClick={() => {changeColor() }}
+        />
+      </Layer>
+    );
+
+  }
+
+  return (
+    getRectangles()
+  );
+
+}
 
 function App() {
   return (
-      <GameEngine
-          style={{ width: 800, height: 600, backgroundColor: "blue" }}
-          systems={[MoveBox]}
-          entities={{
-          //-- Notice that each entity has a unique id (required)
-          //-- and a renderer property (optional). If no renderer
-          //-- is supplied with the entity - it won't get displayed.
-          box1: { x: 200,  y: 200, renderer: <Box />}
-        }}>
-      </GameEngine>
+    <Stage
+      width={window.innerWidth}
+      height={window.innerHeight}
+      draggable={ true }
+    >
+      <ColorWarsRect />
+    </Stage>
   );
 }
 
